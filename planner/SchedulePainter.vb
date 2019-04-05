@@ -98,7 +98,6 @@ Public Class SchedulePainter
             With .Cells(rowIndex, startColIndex)
                 .Style = fCellTimeStyle
                 .AuxValue = New CellAuxInfo(deptID, startTimePart, brush, fillWithColor)
-                .Value = di.Abbreviation
             End With
 
             For iCol As Integer = startColIndex + 1 To endColIndex - 1
@@ -106,7 +105,6 @@ Public Class SchedulePainter
                 With .Cells(rowIndex, iCol)
                     .Style = fCellTimeStyle
                     .AuxValue = New CellAuxInfo(deptID, CellTimePart.FullHour, brush, fillWithColor)
-                    .Value = di.Abbreviation
                 End With
 
             Next
@@ -114,7 +112,6 @@ Public Class SchedulePainter
             With .Cells(rowIndex, endColIndex)
                 .Style = fCellTimeStyle
                 .AuxValue = New CellAuxInfo(deptID, endTimePart, brush, fillWithColor)
-                .Value = di.Abbreviation
             End With
 
             .EndUpdate()
