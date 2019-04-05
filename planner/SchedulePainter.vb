@@ -36,7 +36,7 @@ Public Class SchedulePainter
         Public Brush As SolidBrush
     End Class
 
-    Private fTargetGrid As iGrid
+    Private fDefaultGrid As iGrid
     Private fCellTimeStyle As New iGCellStyle
     Private fCellTimeStrFmt As New StringFormat
     Private fCellTimeFont As Font
@@ -60,9 +60,12 @@ Public Class SchedulePainter
     End Sub
 
     Public Sub Attach(ByVal grid As iGrid)
-        fTargetGrid = grid
-        AddHandler fTargetGrid.CustomDrawCellBackground, AddressOf iGrid_CustomDrawCellBackground
-        AddHandler fTargetGrid.CustomDrawCellForeground, AddressOf iGrid_CustomDrawCellForeground
+        If fDefaultGrid Is Nothing Then
+            fDefaultGrid = grid
+        End If
+
+        AddHandler grid.CustomDrawCellBackground, AddressOf iGrid_CustomDrawCellBackground
+        AddHandler grid.CustomDrawCellForeground, AddressOf iGrid_CustomDrawCellForeground
     End Sub
 
     Public Sub DefineDepartment(ByVal ID As Integer, ByVal name As String, ByVal abbreviation As String, ByVal color As Color)
@@ -76,7 +79,8 @@ Public Class SchedulePainter
 
     Public Sub AddSchedule(ByVal rowIndex As Integer, ByVal startColIndex As Integer, ByVal endColIndex As Integer,
                            ByVal deptID As Integer, ByVal workAccepted As Boolean, ByVal acceptancePending As Boolean,
-                           ByVal startTimePart As CellTimePart, ByVal endTimePart As CellTimePart)
+                           ByVal startTimePart As CellTimePart, ByVal endTimePart As CellTimePart,
+                           Optional ByVal grid As iGrid = Nothing)
 
         Dim di As DeptInfo = fDicDepts(deptID)
 
@@ -91,7 +95,11 @@ Public Class SchedulePainter
             fillWithColor = workAccepted
         End If
 
-        With fTargetGrid
+        If grid Is Nothing Then
+            grid = fDefaultGrid
+        End If
+
+        With grid
 
             .BeginUpdate()
 
