@@ -86,6 +86,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GlobalFuncs.vb" />
+    <Compile Include="LimitDragSelect.Designer.vb">
+      <DependentUpon>LimitDragSelect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LimitDragSelect.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SchedulePainter.vb" />
     <Compile Include="Workplanner.vb">
       <SubType>Form</SubType>
@@ -113,6 +119,9 @@
   <ItemGroup>
     <EmbeddedResource Include="CellHatching.resx">
       <DependentUpon>CellHatching.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LimitDragSelect.resx">
+      <DependentUpon>LimitDragSelect.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Workplanner.resx">
       <DependentUpon>Workplanner.vb</DependentUpon>

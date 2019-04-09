@@ -32,7 +32,7 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.planner.CellHatching
+            Me.MainForm = Global.planner.LimitDragSelect
         End Sub
     End Class
 End Namespace
