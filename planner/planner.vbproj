@@ -85,6 +85,7 @@
     <Compile Include="CellHatching.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CustomCellEditors.vb" />
     <Compile Include="GlobalFuncs.vb" />
     <Compile Include="LaadLogboek.Designer.vb">
       <DependentUpon>LaadLogboek.vb</DependentUpon>
@@ -99,6 +100,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SchedulePainter.vb" />
+    <Compile Include="VariousColumnTypes.Designer.vb">
+      <DependentUpon>VariousColumnTypes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="VariousColumnTypes.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Workplanner.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -131,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LimitDragSelect.resx">
       <DependentUpon>LimitDragSelect.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VariousColumnTypes.resx">
+      <DependentUpon>VariousColumnTypes.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Workplanner.resx">
       <DependentUpon>Workplanner.vb</DependentUpon>
