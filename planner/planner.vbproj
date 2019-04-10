@@ -86,6 +86,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GlobalFuncs.vb" />
+    <Compile Include="LaadLogboek.Designer.vb">
+      <DependentUpon>LaadLogboek.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LaadLogboek.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="LimitDragSelect.Designer.vb">
       <DependentUpon>LimitDragSelect.vb</DependentUpon>
     </Compile>
@@ -119,6 +125,9 @@
   <ItemGroup>
     <EmbeddedResource Include="CellHatching.resx">
       <DependentUpon>CellHatching.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LaadLogboek.resx">
+      <DependentUpon>LaadLogboek.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LimitDragSelect.resx">
       <DependentUpon>LimitDragSelect.vb</DependentUpon>
