@@ -23,7 +23,7 @@ Public Class CellHatching
             .AddSchedule(4, 8, 12, 3, True, False, CellTimePart.Start15Min, CellTimePart.End45Min)  ' 13:15 - 17:45, accepted 
 
             .AddSchedule(0, 8, 12, 2, True, False, CellTimePart.Start45Min, CellTimePart.End15Min, iGrid2)  ' 13:45 - 17:15, accepted
-            .AddSchedule(4, 1, 7, 1, False, False, CellTimePart.Start30Min, CellTimePart.End45Min, iGrid2)  ' 06:30 - 12:45, acceptance pending
+            .AddSchedule(4, 1, 7, 1, False, False, CellTimePart.Start30Min, CellTimePart.End45Min, iGrid2)  ' 06:30 - 12:45, not accepted
         End With
     End Sub
 

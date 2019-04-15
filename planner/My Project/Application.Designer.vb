@@ -32,7 +32,7 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.planner.VariousColumnTypes
+            Me.MainForm = Global.planner.CellHatching
         End Sub
     End Class
 End Namespace
