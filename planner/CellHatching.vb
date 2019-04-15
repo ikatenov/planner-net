@@ -12,6 +12,7 @@ Public Class CellHatching
             .DefineDepartment(1, "Kassa", "K", Color.Aquamarine)
             .DefineDepartment(2, "Butchery", "S", Color.BlanchedAlmond)
             .DefineDepartment(3, "Return", "Rt", Color.Pink)
+            .DefineDepartment(9, "Black dept", "B", Color.Black)
 
             .Attach(iGrid1)
             .Attach(iGrid2)
@@ -23,6 +24,7 @@ Public Class CellHatching
             .AddSchedule(4, 8, 12, 3, True, False, CellTimePart.Start15Min, CellTimePart.End45Min)  ' 13:15 - 17:45, accepted 
 
             .AddSchedule(0, 8, 12, 2, True, False, CellTimePart.Start45Min, CellTimePart.End15Min, iGrid2)  ' 13:45 - 17:15, accepted
+            .AddSchedule(2, 6, 13, 9, True, False, CellTimePart.Start45Min, CellTimePart.End30Min, iGrid2)  ' 11:45 - 18:30, accepted
             .AddSchedule(4, 1, 7, 1, False, False, CellTimePart.Start30Min, CellTimePart.End45Min, iGrid2)  ' 06:30 - 12:45, not accepted
         End With
     End Sub

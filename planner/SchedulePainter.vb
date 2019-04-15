@@ -13,8 +13,6 @@ End Enum
 
 Public Class SchedulePainter
 
-    Private ReadOnly DEPT_LETTER_BRUSH As Brush = Brushes.Black
-
     Private ReadOnly CELL_BACK_COLOR As Color = Color.White
     Private ReadOnly ACCEPTANCE_PENDING_COLOR As Color = Color.Red
 
@@ -31,12 +29,14 @@ Public Class SchedulePainter
         Public DeptID As Integer
         Public TimePart As CellTimePart
         Public FillWithColor As Boolean
+        Public DeptLetterBrush As Brush
         Public BackgroundBrush As Brush
 
-        Public Sub New(ByVal deptID As Integer, ByVal timePart As CellTimePart, ByVal fillWithColor As Boolean, ByVal backgroundBrush As Brush)
+        Public Sub New(ByVal deptID As Integer, ByVal timePart As CellTimePart, ByVal fillWithColor As Boolean, ByVal deptLetterBrush As Brush, ByVal backgroundBrush As Brush)
             Me.DeptID = deptID
             Me.TimePart = timePart
             Me.FillWithColor = fillWithColor
+            Me.DeptLetterBrush = deptLetterBrush
             Me.BackgroundBrush = backgroundBrush
         End Sub
     End Class
@@ -44,6 +44,7 @@ Public Class SchedulePainter
     Private Class DeptInfo
         Public Name As String
         Public Abbreviation As String
+        Public Color As Color
         Public BrushSolidColor As SolidBrush
         Public BrushHatchHalf As HatchBrush
         Public BrushHatchUpward As HatchBrush
@@ -86,6 +87,7 @@ Public Class SchedulePainter
         Dim di As New DeptInfo With {
             .Name = name,
             .Abbreviation = abbreviation,
+            .Color = color,
             .BrushSolidColor = New SolidBrush(color),
             .BrushHatchHalf = New HatchBrush(HATCH_HALF, color, CELL_BACK_COLOR),
             .BrushHatchUpward = New HatchBrush(HATCH_UPWARD, color, CELL_BACK_COLOR),
@@ -119,6 +121,7 @@ Public Class SchedulePainter
             With .Cells(rowIndex, startColIndex)
                 .Style = fCellTimeStyle
                 .AuxValue = New CellAuxInfo(deptID, startTimePart, fillWithColor,
+                                            GetDeptLetterBrush(startTimePart, di.Color),
                                             GetTimePartBrush(startTimePart, acceptancePending, di.BrushSolidColor, di.BrushHatchHalf, di.BrushHatchUpward, di.BrushHatchDownward))
             End With
 
@@ -127,9 +130,9 @@ Public Class SchedulePainter
                 With .Cells(rowIndex, iCol)
                     .Style = fCellTimeStyle
                     If acceptancePending Then
-                        .AuxValue = New CellAuxInfo(deptID, CellTimePart.FullHour, fillWithColor, ACCEPTANCE_PENDING_BRUSH_SOLID_COLOR)
+                        .AuxValue = New CellAuxInfo(deptID, CellTimePart.FullHour, fillWithColor, GetDeptLetterBrush(CellTimePart.FullHour, di.Color), ACCEPTANCE_PENDING_BRUSH_SOLID_COLOR)
                     Else
-                        .AuxValue = New CellAuxInfo(deptID, CellTimePart.FullHour, fillWithColor, di.BrushSolidColor)
+                        .AuxValue = New CellAuxInfo(deptID, CellTimePart.FullHour, fillWithColor, GetDeptLetterBrush(CellTimePart.FullHour, di.Color), di.BrushSolidColor)
                     End If
                 End With
 
@@ -138,6 +141,7 @@ Public Class SchedulePainter
             With .Cells(rowIndex, endColIndex)
                 .Style = fCellTimeStyle
                 .AuxValue = New CellAuxInfo(deptID, endTimePart, fillWithColor,
+                                            GetDeptLetterBrush(endTimePart, di.Color),
                                             GetTimePartBrush(endTimePart, acceptancePending, di.BrushSolidColor, di.BrushHatchHalf, di.BrushHatchUpward, di.BrushHatchDownward))
             End With
 
@@ -146,6 +150,14 @@ Public Class SchedulePainter
         End With
 
     End Sub
+
+    Private Function GetDeptLetterBrush(ByVal timePart As CellTimePart, ByVal deptColor As Color) As Brush
+        If deptColor = Color.Black AndAlso timePart = CellTimePart.FullHour Then
+            Return Brushes.White
+        Else
+            Return Brushes.Black
+        End If
+    End Function
 
     Private Function GetTimePartBrush(ByVal timePart As CellTimePart, ByVal acceptancePending As Boolean,
                                       ByVal brushSolidColor As SolidBrush, ByVal brushHatchHalf As HatchBrush,
@@ -247,15 +259,15 @@ Public Class SchedulePainter
         Dim sourceCell As iGCell
         sourceCell = DirectCast(sender, iGrid).Cells(e.RowIndex, e.ColIndex)
 
-        Dim cti As CellAuxInfo
-        cti = DirectCast(sourceCell.AuxValue, CellAuxInfo)
+        Dim cai As CellAuxInfo
+        cai = DirectCast(sourceCell.AuxValue, CellAuxInfo)
 
-        If cti Is Nothing Then
+        If cai Is Nothing Then
             Return
         End If
 
-        If (cti.TimePart = CellTimePart.FullHour) OrElse (ShowAbbreviationInPartHour) Then
-            e.Graphics.DrawString(fDicDepts(cti.DeptID).Abbreviation, fCellTimeFont, DEPT_LETTER_BRUSH, e.Bounds, fCellTimeStrFmt)
+        If (cai.TimePart = CellTimePart.FullHour) OrElse (ShowAbbreviationInPartHour) Then
+            e.Graphics.DrawString(fDicDepts(cai.DeptID).Abbreviation, fCellTimeFont, cai.DeptLetterBrush, e.Bounds, fCellTimeStrFmt)
         End If
     End Sub
 
