@@ -17,17 +17,17 @@ Public Class CellHatching
             .Attach(iGrid1)
             .Attach(iGrid2)
 
-            .AddSchedule(0, 6, 7, 2, True, False, CellTimePart.FullInterval, CellTimePart.FullInterval)     ' 11:00 - 13:00, accepted
-            .AddSchedule(1, 2, 5, 1, True, False, CellTimePart.Start45Min, CellTimePart.End15Min)           ' 07:45 - 10:15, accepted
-            .AddSchedule(1, 7, 9, 2, False, False, CellTimePart.Start30Min, CellTimePart.End30Min)          ' 12:30 - 14:30, not accepted
-            .AddSchedule(2, 10, 14, 2, False, True, CellTimePart.Start30Min, CellTimePart.End30Min)         ' 15:30 - 19:30, acceptance pending
-            .AddSchedule(3, 4, 8, 3, True, False, CellTimePart.Start30Min, CellTimePart.End15Min)           ' 09:30 - 13:15, accepted 
-            .AddSchedule(4, 8, 12, 3, True, False, CellTimePart.Start15Min, CellTimePart.End45Min)          ' 13:15 - 17:45, accepted 
+            .AddSchedule(0, 6, 7, 2, WorkAcceptanceStatus.Accepted, CellTimePart.FullInterval, CellTimePart.FullInterval)     ' 11:00 - 13:00
+            .AddSchedule(1, 2, 5, 1, WorkAcceptanceStatus.Accepted, CellTimePart.Start45Min, CellTimePart.End15Min)           ' 07:45 - 10:15
+            .AddSchedule(1, 7, 9, 2, WorkAcceptanceStatus.Refused, CellTimePart.Start30Min, CellTimePart.End30Min)            ' 12:30 - 14:30
+            .AddSchedule(2, 10, 14, 2, WorkAcceptanceStatus.Pending, CellTimePart.Start30Min, CellTimePart.End30Min)          ' 15:30 - 19:30
+            .AddSchedule(3, 4, 8, 3, WorkAcceptanceStatus.Accepted, CellTimePart.Start30Min, CellTimePart.End15Min)           ' 09:30 - 13:15
+            .AddSchedule(4, 8, 12, 3, WorkAcceptanceStatus.Accepted, CellTimePart.Start15Min, CellTimePart.End45Min)          ' 13:15 - 17:45
 
-            .AddSchedule(0, 8, 12, 2, True, False, CellTimePart.Start45Min, CellTimePart.End15Min, iGrid2)  ' 13:45 - 17:15, accepted
-            .AddSchedule(2, 6, 13, 9, True, False, CellTimePart.Start45Min, CellTimePart.End30Min, iGrid2)  ' 11:45 - 18:30, accepted
-            .AddSchedule(3, 6, 13, 9, False, False, CellTimePart.Start45Min, CellTimePart.End30Min, iGrid2) ' 11:45 - 18:30, not accepted
-            .AddSchedule(4, 1, 7, 1, False, False, CellTimePart.Start30Min, CellTimePart.End45Min, iGrid2)  ' 06:30 - 12:45, not accepted
+            .AddSchedule(0, 8, 12, 2, WorkAcceptanceStatus.Accepted, CellTimePart.Start45Min, CellTimePart.End15Min, iGrid2)  ' 13:45 - 17:15
+            .AddSchedule(2, 6, 13, 9, WorkAcceptanceStatus.Accepted, CellTimePart.Start45Min, CellTimePart.End30Min, iGrid2)  ' 11:45 - 18:30
+            .AddSchedule(3, 6, 13, 9, WorkAcceptanceStatus.Refused, CellTimePart.Start45Min, CellTimePart.End30Min, iGrid2)   ' 11:45 - 18:30
+            .AddSchedule(4, 1, 7, 1, WorkAcceptanceStatus.Refused, CellTimePart.Start30Min, CellTimePart.End45Min, iGrid2)    ' 06:30 - 12:45
         End With
     End Sub
 

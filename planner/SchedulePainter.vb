@@ -11,6 +11,12 @@ Public Enum CellTimePart
     FullInterval
 End Enum
 
+Public Enum WorkAcceptanceStatus
+    Refused
+    Pending
+    Accepted
+End Enum
+
 Public Class SchedulePainter
 
     Private ReadOnly CELL_BACK_COLOR As Color = Color.White
@@ -100,7 +106,7 @@ Public Class SchedulePainter
     End Sub
 
     Public Sub AddSchedule(ByVal rowIndex As Integer, ByVal startColIndex As Integer, ByVal endColIndex As Integer,
-                           ByVal deptID As Integer, ByVal workAccepted As Boolean, ByVal acceptancePending As Boolean,
+                           ByVal deptID As Integer, ByVal workStatus As WorkAcceptanceStatus,
                            ByVal startTimePart As CellTimePart, ByVal endTimePart As CellTimePart,
                            Optional ByVal grid As iGrid = Nothing)
 
@@ -116,24 +122,24 @@ Public Class SchedulePainter
 
             With .Cells(rowIndex, startColIndex)
                 .Style = fCellTimeStyle
-                .AuxValue = New CellAuxInfo(deptID, startTimePart, GetDeptLetterBrush(startTimePart, workAccepted, acceptancePending, di),
-                    GetTimePartBrush(startTimePart, workAccepted, acceptancePending, di))
+                .AuxValue = New CellAuxInfo(deptID, startTimePart, GetDeptLetterBrush(startTimePart, workStatus, di),
+                    GetTimePartBrush(startTimePart, workStatus, di))
             End With
 
             For iCol As Integer = startColIndex + 1 To endColIndex - 1
 
                 With .Cells(rowIndex, iCol)
                     .Style = fCellTimeStyle
-                    .AuxValue = New CellAuxInfo(deptID, CellTimePart.FullInterval, GetDeptLetterBrush(CellTimePart.FullInterval, workAccepted, acceptancePending, di),
-                        GetTimePartBrush(CellTimePart.FullInterval, workAccepted, acceptancePending, di))
+                    .AuxValue = New CellAuxInfo(deptID, CellTimePart.FullInterval, GetDeptLetterBrush(CellTimePart.FullInterval, workStatus, di),
+                        GetTimePartBrush(CellTimePart.FullInterval, workStatus, di))
                 End With
 
             Next
 
             With .Cells(rowIndex, endColIndex)
                 .Style = fCellTimeStyle
-                .AuxValue = New CellAuxInfo(deptID, endTimePart, GetDeptLetterBrush(endTimePart, workAccepted, acceptancePending, di),
-                    GetTimePartBrush(endTimePart, workAccepted, acceptancePending, di))
+                .AuxValue = New CellAuxInfo(deptID, endTimePart, GetDeptLetterBrush(endTimePart, workStatus, di),
+                    GetTimePartBrush(endTimePart, workStatus, di))
             End With
 
             .EndUpdate()
@@ -142,65 +148,61 @@ Public Class SchedulePainter
 
     End Sub
 
-    Private Function GetDeptLetterBrush(ByVal timePart As CellTimePart, ByVal workAccepted As Boolean, ByVal acceptancePending As Boolean, ByVal di As DeptInfo) As Brush
-        If (di.Color = Color.Black) AndAlso (timePart = CellTimePart.FullInterval) AndAlso (acceptancePending OrElse workAccepted) Then
+    Private Function GetDeptLetterBrush(ByVal timePart As CellTimePart, ByVal workStatus As WorkAcceptanceStatus, ByVal di As DeptInfo) As Brush
+        If (di.Color = Color.Black) AndAlso (timePart = CellTimePart.FullInterval) AndAlso (workStatus <> WorkAcceptanceStatus.Refused) Then
             Return Brushes.White
         Else
             Return Brushes.Black
         End If
     End Function
 
-    Private Function GetTimePartBrush(ByVal timePart As CellTimePart, ByVal workAccepted As Boolean, ByVal acceptancePending As Boolean, ByVal di As DeptInfo) As Brush
+    Private Function GetTimePartBrush(ByVal timePart As CellTimePart, workStatus As WorkAcceptanceStatus, ByVal di As DeptInfo) As Brush
 
         Select Case timePart
 
             Case CellTimePart.FullInterval
 
-                If acceptancePending Then
-                    Return ACCEPTANCE_PENDING_BRUSH_SOLID_COLOR
-                Else
-                    If workAccepted Then
-                        Return di.BrushSolidColor
-                    Else
+                Select Case workStatus
+                    Case WorkAcceptanceStatus.Pending
+                        Return ACCEPTANCE_PENDING_BRUSH_SOLID_COLOR
+                    Case WorkAcceptanceStatus.Refused
                         Return Nothing
-                    End If
-                End If
+                    Case WorkAcceptanceStatus.Accepted
+                        Return di.BrushSolidColor
+                End Select
 
             Case CellTimePart.Start15Min, CellTimePart.End15Min
 
-                If acceptancePending Then
-                    Return ACCEPTANCE_PENDING_BRUSH_HATCH_UPWARD
-                Else
-                    If workAccepted Then
-                        Return di.BrushHatchUpward
-                    Else
+                Select Case workStatus
+                    Case WorkAcceptanceStatus.Pending
+                        Return ACCEPTANCE_PENDING_BRUSH_HATCH_UPWARD
+                    Case WorkAcceptanceStatus.Refused
                         Return NOT_ACCEPTED_BRUSH_HATCH_UPWARD
-                    End If
-                End If
+                    Case WorkAcceptanceStatus.Accepted
+                        Return di.BrushHatchUpward
+                End Select
 
             Case CellTimePart.Start45Min, CellTimePart.End45Min
 
-                If acceptancePending Then
-                    Return ACCEPTANCE_PENDING_BRUSH_HATCH_DOWNWARD
-                Else
-                    If workAccepted Then
-                        Return di.BrushHatchDownward
-                    Else
+                Select Case workStatus
+                    Case WorkAcceptanceStatus.Pending
+                        Return ACCEPTANCE_PENDING_BRUSH_HATCH_DOWNWARD
+                    Case WorkAcceptanceStatus.Refused
                         Return NOT_ACCEPTED_BRUSH_HATCH_DOWNWARD
-                    End If
-                End If
+                    Case WorkAcceptanceStatus.Accepted
+                        Return di.BrushHatchDownward
+                End Select
 
             Case CellTimePart.Start30Min, CellTimePart.End30Min
 
-                If acceptancePending Then
-                    Return ACCEPTANCE_PENDING_BRUSH_HATCH_HALF
-                Else
-                    If workAccepted Then
-                        Return di.BrushHatchHalf
-                    Else
+                Select Case workStatus
+                    Case WorkAcceptanceStatus.Pending
+                        Return ACCEPTANCE_PENDING_BRUSH_HATCH_HALF
+                    Case WorkAcceptanceStatus.Refused
                         Return NOT_ACCEPTED_BRUSH_HATCH_HALF
-                    End If
-                End If
+                    Case WorkAcceptanceStatus.Accepted
+                        Return di.BrushHatchHalf
+                End Select
 
         End Select
 
